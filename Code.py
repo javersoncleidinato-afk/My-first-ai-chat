@@ -1,6 +1,7 @@
 import requests
 import urllib.parse
-api_key = "your key here(optional)"
+
+memory_limit = 1
 
 rules = [
     "not defined"
@@ -10,7 +11,9 @@ memory = []
 
 def chat(prompt):
     global memory
-    context = "\n".join(rules + memory)
+
+    context = "\n".join(rules + memory[-memory_limit*2:])  # memory limit applied
+
     full_prompt = f"""
 Context:
 {context}
@@ -19,17 +22,21 @@ User:
 Response:
 """
     url = "https://text.pollinations.ai/" + urllib.parse.quote(full_prompt)
-    response = requests.get(url)
-    return response.text
 
+    try:
+        response = requests.get(url)
+        return response.text
+    except:
+        return "Request error"
 
 while True:
     message = input("You: ")
 
-    
     reply = chat(message)
 
     memory.append(f"User: {message}")
     memory.append(f"AI: {reply}")
 
-    print("IA:", reply)
+    memory = memory[-memory_limit*2:]
+
+    print("AI:", reply)
