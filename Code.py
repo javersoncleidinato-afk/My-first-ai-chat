@@ -26,6 +26,7 @@ Response:
 while True:
     message = input("You: ")
 
+    
     reply = chat(message)
 
     memory.append(f"User: {message}")
