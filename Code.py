@@ -1,7 +1,7 @@
 import requests
 import urllib.parse
 
-memory_limit = 1
+memory_limit = 10
 
 rules = [
     "not defined"
